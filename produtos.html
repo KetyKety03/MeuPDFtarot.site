@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDFs Místicos para Venda</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <div class="container">
+    <h1>🧿 Biblioteca Mística</h1>
+    <p>Escolha um arquivo, copie a chave Pix, faça o pagamento e envie o comprovante pelo WhatsApp.</p>
+    <label for="pixKey">Chave Pix (copia e cola):</label>
+    <textarea id="pixKey" readonly onclick="this.select()">413c04b0-2327-470e-acf2-d2978e0ba235</textarea>
+    <button onclick="copyPix()">Copiar Chave Pix</button>
+    <div id="produtos-lista"></div>
+    <a href="index.html">← Voltar para a página principal</a>
+  </div>
+  <script>
+    const produtos = [["78 Graus de Sabedoria - Rachel Pollack", "4,99"], ["A Bíblia do Tarot - Sarah Bartlett", "9,99"], ["Alquimia e Tarô - Robert M. Place", "5,99"], ["Curso Completo de Tarot - Nei Naiff", "9,99"], ["Espelho Da Alma - Manual Para o Tarô - de Aleister Crowley", "9,99"], ["Guia Completo do Tarô - Hajo Banzhaf", "5,99"], ["Jung e o Tarô - Sallie Nichols", "9,99"], ["Manual de Tarô - Mentalizações e Afirmações para os Arcanos Maiores", "5,99"], ["Manual do Tarô - Hajo Banzhaf", "4,99"], ["Meditações Sobre Os 22 Arcanos Maiores Do Tarot", "5,99"], ["O Caminho do Tarot - Alejandro Jodorowsky e Marianne Costa", "4,99"], ["O Livro Completo do Tarô - Juliet Sharman Burke", "4,99"], ["O Tarô Cabalístico - Robert Wang", "5,99"], ["O Tarô Clássico - Stuart R Kaplan", "5,99"], ["O Tarô da Prosperidade - Celina Fioravanti", "4,99"], ["O Tarô de Marselha - Paul Marteau", "4,99"], ["O Tarô de Marselha Revelado - Yoav Ben-Dov", "4,99"], ["O Taro do Amor - Celina Fioravanti", "4,99"], ["O Tarô e a Viagem do Herói - Hajo Banzhaf", "4,99"], ["O Tarô e o Amor - Gerd Ziegler", "4,99"], ["O Tarô Encantado - Amy Zerner e Monte Farber", "4,99"], ["O Templo Vivente - Volume I - Um Guia para o Tarô de Crowley - Anderson Rosa", "4,99"], ["O Tempo Vivente - Volume II - Um Guia Para o Tarô de Crowley - Anderson Rosa", "4,99"], ["Palavras Chave Tarot de Crowley - Hajo Banzhaf", "4,99"], ["Tarô - A Sorte Pelas Cartas - Arthur Edward Waite", "4,99"], ["Tarô - Dicionário e Compêndio - Jana Riley", "4,99"], ["Tarô Arcanos Maiores - Compilação de Constantino K. Riemma", "4,99"], ["Tarô do Amor - Jane Lyle", "4,99"], ["Tarô dos Anjos - Monica Buonfiglio", "4,99"], ["Tarô e Saúde", "4,99"], ["Tarô Mitológico - Juliet Sharman-Burke e Liz Greene", "5,99"], ["Tarô ou A Máquina de Imaginar - Alberto Cousté", "5,99"], ["Tarô Psicológico Para Iniciantes - Corinne Morel", "5,99"], ["Tarô, Carma e Numerologia - Nei Naiff", "5,99"]];
+    const container = document.getElementById('produtos-lista');
+    produtos.forEach(([nome, preco], index) => {
+      const prodDiv = document.createElement('div');
+      prodDiv.className = 'produto';
+      prodDiv.innerHTML = `
+        <h2>🔮 ${nome}</h2>
+        <p><strong>Preço:</strong> R$ ${preco}</p>
+        <form onsubmit="enviarWhatsApp(event, ${index})">
+          <label for="email-${index}">Seu e-mail para envio do arquivo:</label>
+          <input type="email" id="email-${index}" name="email" placeholder="exemplo@email.com" required />
+          <button type="submit">Enviar comprovante</button>
+        </form>
+      `;
+      container.appendChild(prodDiv);
+    });
+
+    function enviarWhatsApp(event, index) {
+      event.preventDefault();
+      const emailInput = event.target.querySelector('input[type="email"]');
+      const email = encodeURIComponent(emailInput.value);
+      const produto = encodeURIComponent(produtos[index][0]);
+      const numeroWhats = '5511969950722';
+      const mensagem = `Olá! Eu fiz o pagamento do produto "${produto}", meu e-mail é ${email}. Por favor, envie o arquivo.`;
+      const url = `https://wa.me/${numeroWhats}?text=${mensagem}`;
+      window.open(url, '_blank');
+    }
+
+    function copyPix() {
+      const pixKey = document.getElementById('pixKey');
+      pixKey.select();
+      pixKey.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(pixKey.value);
+      alert('Chave Pix copiada!');
+    }
+  </script>
+</body>
+</html>
